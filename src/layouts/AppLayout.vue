@@ -55,7 +55,8 @@ function handleClickOutside(e) {
 
 function handleLogout() {
   profileOpen.value = false
-  localStorage.removeItem('token')
+  localStorage.removeItem('accessToken')
+  localStorage.removeItem('refreshToken')
   router.push('/login')
 }
 
@@ -82,9 +83,9 @@ onBeforeUnmount(() => {
           <!-- Logo -->
           <router-link to="/" class="flex items-center gap-2 shrink-0">
             <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-              <span class="text-white font-bold text-sm">A</span>
+              <span class="text-white font-bold text-sm">O</span>
             </div>
-            <span class="text-xl font-bold text-[#344054]">Aroon</span>
+            <span class="text-md font-bold text-[#344054]">ArO_On Mgmt System</span>
           </router-link>
 
           <!-- Main Navigation (중앙 배치) -->

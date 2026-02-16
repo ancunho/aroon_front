@@ -1,10 +1,44 @@
 <script setup>
 import { ref } from 'vue'
+import { AgGridVue } from 'ag-grid-vue3'
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
 
-const users = ref([
-  { id: 1, name: '홍길동', email: 'hong@aroon.com', role: '관리자', status: '활성' },
-  { id: 2, name: '김철수', email: 'kim@aroon.com', role: '사용자', status: '활성' },
-  { id: 3, name: '이영희', email: 'lee@aroon.com', role: '사용자', status: '비활성' },
+ModuleRegistry.registerModules([AllCommunityModule])
+
+const columnDefs = ref([
+  { field: 'id', headerName: 'ID', width: 80 },
+  { field: 'name', headerName: '이름', width: 120 },
+  { field: 'email', headerName: '이메일', flex: 1 },
+  { field: 'role', headerName: '역할', width: 100 },
+  {
+    field: 'status',
+    headerName: '상태',
+    width: 100,
+    cellStyle: (params) => {
+      if (params.value === '활성') return { color: '#15803d' }
+      return { color: '#6b7280' }
+    },
+  },
+  { field: 'createdAt', headerName: '등록일', width: 130 },
+])
+
+const defaultColDef = ref({
+  sortable: true,
+  filter: true,
+  resizable: true,
+})
+
+const rowData = ref([
+  { id: 1, name: '홍길동', email: 'hong@aroon.com', role: '관리자', status: '활성', createdAt: '2025-12-01' },
+  { id: 2, name: '김철수', email: 'kim@aroon.com', role: '사용자', status: '활성', createdAt: '2025-12-15' },
+  { id: 3, name: '이영희', email: 'lee@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-01-03' },
+  { id: 4, name: '박민수', email: 'park@aroon.com', role: '사용자', status: '활성', createdAt: '2026-01-10' },
+  { id: 5, name: '정수진', email: 'jung@aroon.com', role: '관리자', status: '활성', createdAt: '2026-01-20' },
+  { id: 6, name: '최동훈', email: 'choi@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-02-01' },
+  { id: 7, name: '강미래', email: 'kang@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-05' },
+  { id: 8, name: '윤서준', email: 'yoon@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-10' },
+  { id: 9, name: '임하나', email: 'lim@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-12' },
+  { id: 10, name: '한지우', email: 'han@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-02-14' },
 ])
 </script>
 
@@ -21,35 +55,15 @@ const users = ref([
     </div>
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-      <table class="w-full">
-        <thead class="bg-gray-50 border-b border-gray-200">
-          <tr>
-            <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">ID</th>
-            <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">이름</th>
-            <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">이메일</th>
-            <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">역할</th>
-            <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">상태</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-100">
-          <tr v-for="user in users" :key="user.id" class="hover:bg-gray-50 transition-colors">
-            <td class="px-6 py-4 text-sm text-gray-600">{{ user.id }}</td>
-            <td class="px-6 py-4 text-sm font-medium text-gray-800">{{ user.name }}</td>
-            <td class="px-6 py-4 text-sm text-gray-600">{{ user.email }}</td>
-            <td class="px-6 py-4 text-sm text-gray-600">{{ user.role }}</td>
-            <td class="px-6 py-4">
-              <span
-                :class="user.status === '활성'
-                  ? 'bg-green-100 text-green-700'
-                  : 'bg-gray-100 text-gray-600'"
-                class="px-2 py-1 rounded-full text-xs font-medium"
-              >
-                {{ user.status }}
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <AgGridVue
+        style="width: 100%; height: 500px;"
+        :columnDefs="columnDefs"
+        :rowData="rowData"
+        :defaultColDef="defaultColDef"
+        rowSelection="single"
+        :pagination="true"
+        :paginationPageSize="20"
+      />
     </div>
   </div>
 </template>

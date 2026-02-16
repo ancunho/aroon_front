@@ -1,9 +1,42 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, h } from 'vue'
 import { AgGridVue } from 'ag-grid-vue3'
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
 
 ModuleRegistry.registerModules([AllCommunityModule])
+
+function onEdit(data) {
+  console.log('[편집]', JSON.stringify(data, null, 2))
+}
+
+function onModify(data) {
+  console.log('[수정]', JSON.stringify(data, null, 2))
+}
+
+function onDelete(data) {
+  console.log('[삭제]', JSON.stringify(data, null, 2))
+}
+
+const ActionButtons = {
+  setup(props) {
+    const data = props.params.data
+    return () =>
+      h('div', { style: 'display:flex; gap:4px; align-items:center; height:100%;' }, [
+        h('button', {
+          onClick: () => onEdit(data),
+          style: 'padding:2px 8px; font-size:12px; color:#2563eb; border:1px solid #2563eb; border-radius:4px; cursor:pointer; background:white;',
+        }, '편집'),
+        h('button', {
+          onClick: () => onModify(data),
+          style: 'padding:2px 8px; font-size:12px; color:#16a34a; border:1px solid #16a34a; border-radius:4px; cursor:pointer; background:white;',
+        }, '수정'),
+        h('button', {
+          onClick: () => onDelete(data),
+          style: 'padding:2px 8px; font-size:12px; color:#dc2626; border:1px solid #dc2626; border-radius:4px; cursor:pointer; background:white;',
+        }, '삭제'),
+      ])
+  },
+}
 
 const columnDefs = ref([
   { field: 'id', headerName: 'ID', width: 80 },
@@ -20,6 +53,14 @@ const columnDefs = ref([
     },
   },
   { field: 'createdAt', headerName: '등록일', width: 130 },
+  {
+    headerName: '관리',
+    width: 200,
+    sortable: false,
+    filter: false,
+    resizable: false,
+    cellRenderer: ActionButtons,
+  },
 ])
 
 const defaultColDef = ref({
@@ -29,6 +70,86 @@ const defaultColDef = ref({
 })
 
 const rowData = ref([
+  { id: 1, name: '홍길동', email: 'hong@aroon.com', role: '관리자', status: '활성', createdAt: '2025-12-01' },
+  { id: 2, name: '김철수', email: 'kim@aroon.com', role: '사용자', status: '활성', createdAt: '2025-12-15' },
+  { id: 3, name: '이영희', email: 'lee@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-01-03' },
+  { id: 4, name: '박민수', email: 'park@aroon.com', role: '사용자', status: '활성', createdAt: '2026-01-10' },
+  { id: 5, name: '정수진', email: 'jung@aroon.com', role: '관리자', status: '활성', createdAt: '2026-01-20' },
+  { id: 6, name: '최동훈', email: 'choi@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-02-01' },
+  { id: 7, name: '강미래', email: 'kang@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-05' },
+  { id: 8, name: '윤서준', email: 'yoon@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-10' },
+  { id: 9, name: '임하나', email: 'lim@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-12' },
+  { id: 10, name: '한지우', email: 'han@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-02-14' },
+  { id: 1, name: '홍길동', email: 'hong@aroon.com', role: '관리자', status: '활성', createdAt: '2025-12-01' },
+  { id: 2, name: '김철수', email: 'kim@aroon.com', role: '사용자', status: '활성', createdAt: '2025-12-15' },
+  { id: 3, name: '이영희', email: 'lee@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-01-03' },
+  { id: 4, name: '박민수', email: 'park@aroon.com', role: '사용자', status: '활성', createdAt: '2026-01-10' },
+  { id: 5, name: '정수진', email: 'jung@aroon.com', role: '관리자', status: '활성', createdAt: '2026-01-20' },
+  { id: 6, name: '최동훈', email: 'choi@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-02-01' },
+  { id: 7, name: '강미래', email: 'kang@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-05' },
+  { id: 8, name: '윤서준', email: 'yoon@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-10' },
+  { id: 9, name: '임하나', email: 'lim@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-12' },
+  { id: 10, name: '한지우', email: 'han@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-02-14' },
+  { id: 1, name: '홍길동', email: 'hong@aroon.com', role: '관리자', status: '활성', createdAt: '2025-12-01' },
+  { id: 2, name: '김철수', email: 'kim@aroon.com', role: '사용자', status: '활성', createdAt: '2025-12-15' },
+  { id: 3, name: '이영희', email: 'lee@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-01-03' },
+  { id: 4, name: '박민수', email: 'park@aroon.com', role: '사용자', status: '활성', createdAt: '2026-01-10' },
+  { id: 5, name: '정수진', email: 'jung@aroon.com', role: '관리자', status: '활성', createdAt: '2026-01-20' },
+  { id: 6, name: '최동훈', email: 'choi@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-02-01' },
+  { id: 7, name: '강미래', email: 'kang@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-05' },
+  { id: 8, name: '윤서준', email: 'yoon@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-10' },
+  { id: 9, name: '임하나', email: 'lim@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-12' },
+  { id: 10, name: '한지우', email: 'han@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-02-14' },
+  { id: 1, name: '홍길동', email: 'hong@aroon.com', role: '관리자', status: '활성', createdAt: '2025-12-01' },
+  { id: 2, name: '김철수', email: 'kim@aroon.com', role: '사용자', status: '활성', createdAt: '2025-12-15' },
+  { id: 3, name: '이영희', email: 'lee@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-01-03' },
+  { id: 4, name: '박민수', email: 'park@aroon.com', role: '사용자', status: '활성', createdAt: '2026-01-10' },
+  { id: 5, name: '정수진', email: 'jung@aroon.com', role: '관리자', status: '활성', createdAt: '2026-01-20' },
+  { id: 6, name: '최동훈', email: 'choi@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-02-01' },
+  { id: 7, name: '강미래', email: 'kang@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-05' },
+  { id: 8, name: '윤서준', email: 'yoon@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-10' },
+  { id: 9, name: '임하나', email: 'lim@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-12' },
+  { id: 10, name: '한지우', email: 'han@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-02-14' },
+  { id: 1, name: '홍길동', email: 'hong@aroon.com', role: '관리자', status: '활성', createdAt: '2025-12-01' },
+  { id: 2, name: '김철수', email: 'kim@aroon.com', role: '사용자', status: '활성', createdAt: '2025-12-15' },
+  { id: 3, name: '이영희', email: 'lee@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-01-03' },
+  { id: 4, name: '박민수', email: 'park@aroon.com', role: '사용자', status: '활성', createdAt: '2026-01-10' },
+  { id: 5, name: '정수진', email: 'jung@aroon.com', role: '관리자', status: '활성', createdAt: '2026-01-20' },
+  { id: 6, name: '최동훈', email: 'choi@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-02-01' },
+  { id: 7, name: '강미래', email: 'kang@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-05' },
+  { id: 8, name: '윤서준', email: 'yoon@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-10' },
+  { id: 9, name: '임하나', email: 'lim@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-12' },
+  { id: 10, name: '한지우', email: 'han@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-02-14' },
+  { id: 1, name: '홍길동', email: 'hong@aroon.com', role: '관리자', status: '활성', createdAt: '2025-12-01' },
+  { id: 2, name: '김철수', email: 'kim@aroon.com', role: '사용자', status: '활성', createdAt: '2025-12-15' },
+  { id: 3, name: '이영희', email: 'lee@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-01-03' },
+  { id: 4, name: '박민수', email: 'park@aroon.com', role: '사용자', status: '활성', createdAt: '2026-01-10' },
+  { id: 5, name: '정수진', email: 'jung@aroon.com', role: '관리자', status: '활성', createdAt: '2026-01-20' },
+  { id: 6, name: '최동훈', email: 'choi@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-02-01' },
+  { id: 7, name: '강미래', email: 'kang@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-05' },
+  { id: 8, name: '윤서준', email: 'yoon@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-10' },
+  { id: 9, name: '임하나', email: 'lim@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-12' },
+  { id: 10, name: '한지우', email: 'han@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-02-14' },
+  { id: 1, name: '홍길동', email: 'hong@aroon.com', role: '관리자', status: '활성', createdAt: '2025-12-01' },
+  { id: 2, name: '김철수', email: 'kim@aroon.com', role: '사용자', status: '활성', createdAt: '2025-12-15' },
+  { id: 3, name: '이영희', email: 'lee@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-01-03' },
+  { id: 4, name: '박민수', email: 'park@aroon.com', role: '사용자', status: '활성', createdAt: '2026-01-10' },
+  { id: 5, name: '정수진', email: 'jung@aroon.com', role: '관리자', status: '활성', createdAt: '2026-01-20' },
+  { id: 6, name: '최동훈', email: 'choi@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-02-01' },
+  { id: 7, name: '강미래', email: 'kang@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-05' },
+  { id: 8, name: '윤서준', email: 'yoon@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-10' },
+  { id: 9, name: '임하나', email: 'lim@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-12' },
+  { id: 10, name: '한지우', email: 'han@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-02-14' },
+  { id: 1, name: '홍길동', email: 'hong@aroon.com', role: '관리자', status: '활성', createdAt: '2025-12-01' },
+  { id: 2, name: '김철수', email: 'kim@aroon.com', role: '사용자', status: '활성', createdAt: '2025-12-15' },
+  { id: 3, name: '이영희', email: 'lee@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-01-03' },
+  { id: 4, name: '박민수', email: 'park@aroon.com', role: '사용자', status: '활성', createdAt: '2026-01-10' },
+  { id: 5, name: '정수진', email: 'jung@aroon.com', role: '관리자', status: '활성', createdAt: '2026-01-20' },
+  { id: 6, name: '최동훈', email: 'choi@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-02-01' },
+  { id: 7, name: '강미래', email: 'kang@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-05' },
+  { id: 8, name: '윤서준', email: 'yoon@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-10' },
+  { id: 9, name: '임하나', email: 'lim@aroon.com', role: '사용자', status: '활성', createdAt: '2026-02-12' },
+  { id: 10, name: '한지우', email: 'han@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-02-14' },
   { id: 1, name: '홍길동', email: 'hong@aroon.com', role: '관리자', status: '활성', createdAt: '2025-12-01' },
   { id: 2, name: '김철수', email: 'kim@aroon.com', role: '사용자', status: '활성', createdAt: '2025-12-15' },
   { id: 3, name: '이영희', email: 'lee@aroon.com', role: '사용자', status: '비활성', createdAt: '2026-01-03' },
@@ -57,6 +178,7 @@ const rowData = ref([
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
       <AgGridVue
         style="width: 100%; height: 500px;"
+        :suppressCellFocus="true"
         :columnDefs="columnDefs"
         :rowData="rowData"
         :defaultColDef="defaultColDef"
